@@ -34,7 +34,11 @@ namespace :rpush do
     on roles (fetch(:rpush_role)) do |role|
       rpush_switch_user(role) do
         if test "[ -f #{fetch(:rpush_pid)} ]"
-          invoke 'rpush:stop'
+          begin
+            invoke 'rpush:stop'
+          rescue Errno::ESRCH => e
+            puts "Errno::ESRCH"
+          end
         end
         invoke 'rpush:start'
       end
