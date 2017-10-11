@@ -33,12 +33,10 @@ namespace :rpush do
   task :restart do
     on roles (fetch(:rpush_role)) do |role|
       rpush_switch_user(role) do
-        if test "[ -f #{fetch(:rpush_pid)} ]"
-          begin
-            invoke 'rpush:stop'
-          rescue Errno::ESRCH => e
-            puts "Errno::ESRCH"
-          end
+        process_counts = `ps aux | grep rpush | wc -l`
+
+        if process_counts.to_i > 1
+          invoke 'rpush:stop'
         end
         invoke 'rpush:start'
       end
