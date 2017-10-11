@@ -1,3 +1,9 @@
+def safe_task(&block)
+  yield
+rescue
+  # do something
+end
+
 namespace :load do
   set :rpush_default_hooks, -> { true }
   set :rpush_role,          :app
@@ -16,7 +22,7 @@ end
 namespace :rpush do
 
   task :add_default_hooks do
-    after 'deploy:check',    'rpush:check'
+    #after 'deploy:check',    'rpush:check'
     after 'deploy:finished', 'rpush:restart'
   end
 
@@ -36,7 +42,9 @@ namespace :rpush do
         process_counts = `ps aux | grep rpush | wc -l`
 
         if process_counts.to_i > 1
-          invoke 'rpush:stop'
+          safe_task do
+            invoke 'rpush:stop'
+          end
         end
         invoke 'rpush:start'
       end
