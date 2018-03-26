@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.post_install_message = "Thanks for installing!"
+  #spec.post_install_message = "Thanks for installing!"
   spec.metadata = {
     "source_code"   => 'https://github.com/juicyparts/capistrano-rpush',
     "issue_tracker" => "https://github.com/juicyparts/capistrano-rpush/issues",
